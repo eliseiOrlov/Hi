@@ -1,0 +1,29 @@
+.CanvasParent{
+	text-align: center;
+}
+.h2 {
+	border-color: orange;
+	border-style: double;
+	border-radius: 3px;
+	display: inline-block;
+	font-size: 30px;
+}
+
+.score1 {
+	width: 700px;
+	margin: 0 auto;
+	text-align: right;
+}
+.score {
+
+}
+h1{
+	text-align: center;
+	color: #898F25;
+	font-size: 50px;
+	margin-bottom: 0px;
+
+}
+.ArrowImage {
+	display: none; 
+}

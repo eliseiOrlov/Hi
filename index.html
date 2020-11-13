@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		canvas {
+			border: 1px solid black;
+
+		}
+	</style>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="ArrowFlight.css">
+</head>
+<body>
+	<h1>POP THE BALLOON</h1>
+<div class="score1">
+	<div class="h2">
+		<span id="score">Score: 0</span>
+	</div>
+</div>
+<div class="CanvasParent" id="CanvasParent"><canvas id="canvas" width="700" height="400"></canvas></div>
+
+<div style=";" class="ArrowImage">
+	<img src="Arrow.png" width = "150" height= "150", id="ArrowImage">
+</div>
+
+
+
+<script type="text/javascript">
+	
+var canvas = document.getElementById('canvas');
+
+var ctx = canvas.getContext('2d');  
+
+var colors =["black", "green", "yellow", "red", "orange", "blue"];
+
+var score=0;
+var level=1;
+
+class Arrow {
+	constructor(x,y,speed, angle,width, height){
+		this.x=x;
+		this.y=y;
+		this.angle=angle;
+		this.speed=speed;
+		this.image= document.getElementById('ArrowImage');
+		this.width=width;
+		this.height=height;
+
+	}
+	draw (){
+		ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+	}
+	move (){
+		this.x = this.x + Math.cos(this.angle)*this.speed;
+        this.y = this.y - Math.sin(this.angle)*this.speed;
+        if (this.x <=0 && this.y<=0){
+            this.x=canvas.width-50;
+        	this.y=350;
+        	this.speed=0;
+        	
+
+        
+
+        
+    
+	}}
+}
+
+
+class Ball {
+	constructor(x,y,size,speed,angle,){
+		this.x=x;
+		this.y=y;
+		this.size=size/2;
+		this.color=colors[Math.floor(Math.random()*colors.length)];
+		this.speed=speed;
+    	this.angle=angle;
+    	
+    	
+    	
+		
+	}
+	draw(){
+		ctx.beginPath();
+        ctx.fillStyle= this.color;
+       
+        ctx.arc(this.x, this.y,this.size, 0, Math.PI*2);
+		ctx.stroke();
+		ctx.fill();
+
+	}
+	move (){
+        this.x = this.x + Math.cos(this.angle)*this.speed;
+        this.y = this.y - Math.sin(this.angle)*this.speed;
+        if (this.x >= canvas.width && this.y <=0){
+        	return false;
+
+
+        }
+        else if (this.x <= 0 && this.y >=canvas.height){
+        	return false;
+        }
+        return true;
+
+	        /*if (this.x >= 0 && this.y <=canvas.length){
+	        	return true;
+
+
+	        }
+	        return false;*/
+        
+    }
+
+
+
+    
+}
+
+
+ 
+
+
+function appearBalls (){
+	for (var i=0; i<10; i++){
+	var ball = new Ball (15+random(-60,40),375-random(-50,50), 40,random(3,7),0.5);
+	console.log(ball);
+	balls.push(ball);
+	}
+}
+
+function appearBalls2 (){
+	for (var e=0; e<15; e++){
+	var ball2 = new Ball (canvas.width+random(-5, 5),0+random(-50,50), 40,random(3,7),3.64);
+	console.log(ball2);
+	balls2.push(ball2);
+
+	}
+}
+
+function random (min, max){
+	return Math.floor(Math.random()*(max-min)+min);
+}
+
+var balls = [];
+var balls2 = [];
+appearBalls();
+appearBalls2();
+//375
+/*var balls2 = [];
+for (var i=0; i<10; i++){
+	var ball2 = new Ball (675, 50, 40);
+	balls2.push(ball2);
+}
+*/
+//console.log(ball, ball2);
+//Math.floor(Math.random()*300), Math.floor(Math.random)*10,40
+
+
+
+
+
+
+var arrow= new Arrow (canvas.width-50,350,0,2.641,120, 120);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var timer=setInterval(function(){
+
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+//balls start their journey
+
+
+	
+    for (var i = balls.length-1; i >= 0; i--){
+    	//balls[i];
+    	balls[i].draw();
+    	if (balls[i].move()==false){
+    		balls.splice(i,1);
+    		console.log("splice");
+    	}
+    }
+    if (balls.length==0){
+    	appearBalls();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    for (var i=balls.length-1; i>=0; i--){
+    	if (Math.sqrt((balls[i].y+10-arrow.y)**2+(balls[i].x+10-arrow.x)**2)<balls[i].size+20){
+    		score++
+    		document.getElementById("score").innerHTML="Score: " + score;
+    		balls.splice(i,1)
+    		if (score==25){
+    			level=2;
+    			alert ("You have successfully passed level 1!  Level " + level + " begins...");
+    		}
+    		if (score==50){
+    			level=3;
+    			alert ("You have successfully passed level "+ (level-1) + "! "  +  "level " + level +  " begins...");
+    		}
+
+    		if (score==75){
+    			level=4;
+    			alert ("You have successfully passed level "+ (level-1) + "! " + "level " + level +  " begins...");
+    		}
+    		if (score==100){
+    			alert ("You have successfully passed the game" + "Congradulations!!!");
+    		}
+
+    	}
+    }
+
+
+    for (var i=balls2.length-1; i>=0; i--){
+    	if (Math.sqrt((balls2[i].y+10-arrow.y)**2+(balls2[i].x+10-arrow.x)**2)<balls2[i].size+20){
+    		score++
+    		document.getElementById("score").innerHTML="Score: " + score;
+    		balls2.splice(i,1);
+    		if (score==25){
+    			level=2;
+    			alert ("You have successfully passed level 1!  Level " + level + " begins...");
+    		}
+    		if (score==50){
+    			level=3;
+    			alert ("You have successfully passed level "+ (level-1) + "! " + "level " + level +  " begins...");
+    		}
+
+    		if (score==75){
+    			level=4;
+    			alert ("You have successfully passed level "+ (level-1) + "! " + "level " + level +  " begins...");
+    		}
+    		if (score==100){
+    			alert ("You have successfully passed the game" + "Congradulations!!!");
+    		}
+
+    	}
+    }
+
+
+
+
+document.addEventListener('keydown',function (event){
+    console.log(event);
+		if (event.key==" " && level==1){	
+
+	    arrow.speed=5;
+	    
+    
+	}
+
+	if (event.key==" " && level==2){	
+	    arrow.speed=3.5;
+	      
+	}
+
+	if (event.key==" " && level==3){	
+	    arrow.speed=2;
+	      
+	}
+
+	if (event.key==" " && level==4){	
+	    arrow.speed=1;
+	       
+	}
+
+} )
+
+
+
+
+
+
+
+
+
+    for (var b = balls2.length-1; b >= 0; b--){
+    	//balls[i];
+    	balls2[b].draw();
+    	if (balls2[b].move()==false){
+    		balls2.splice(b,1);
+    		console.log("2splice2");
+    	}
+    }
+    if (balls2.length==0){
+    	appearBalls2();
+    	console.log("2shejbkbejbckje2");
+    }
+    arrow.draw();
+    arrow.move();
+
+
+
+
+//balls2 start their journey
+ /*   for (var b = 0; b < balls2.length; b++){
+    	//balls[i];
+    	balls2[b].draw();
+    	balls2[b].move();
+    	console.log ("hello2");
+    }*/
+   // ball.draw();
+   // ball.move();
+ /*if (this.x + this.r > canvas.width){
+             this.speedx = -Math.abs(this.speedx);
+           
+        }
+        if (this.y + this.r > canvas.height){//Reflect against bottom
+            this.speedy = -Math.abs(this.speedy);
+        }
+         if (this.x < 0) {
+          this.speedx = Math.abs(this.speedx);
+         }
+        if (this.y < 0) {       //reflect against top
+            this.speedy = Math.abs(this.speedy);
+        }
+*/
+},16)
+
+//Math.floor(Math.random()*400),Math.floor(math
+
+
+
+
+
+</script>
+</body>
+</html>
